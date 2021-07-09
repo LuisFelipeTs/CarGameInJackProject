@@ -1,0 +1,218 @@
+class RaceGame {
+   field int game_record;
+   field Street street;
+   field Random random;
+   field Street menu_street;
+                        
+   constructor RaceGame new() {
+      do main_menu();
+	  do Screen.clearScreen();
+	  do start_counting();
+	  do Screen.clearScreen();
+	  let street = Street.new( false );
+	  do start_game(street);
+      return this;
+   }
+   
+  
+   method void send_game_message( int positionX, int positionY, String mensage) {
+	  var String mensage_to_send;
+	  var int pX,pY;
+	  let mensage_to_send = mensage;
+	  let pX = positionX;
+	  let pY = positionY;
+      do Output.moveCursor(pX, pY);
+      do Output.printString(mensage_to_send);
+      return;
+   }
+   
+   method void main_menu() {
+	var char key_pressed;
+	do Screen.clearScreen(); 
+	do send_game_message(9 , 8, "DONT HIT THE GAME!!");
+	do send_game_message(13.5 , 3, "Press <- to go to the Left");
+	do send_game_message(14.5 , 3, "Press -> to go to the Right");
+	let menu_street = Street.new( true );
+	let key_pressed = 0;
+	while (key_pressed = 0) {
+	   do send_game_message(10.8 , 7, "Hold 'SPACE' To Start");
+       let key_pressed = Keyboard.keyPressed();
+	   do Sys.wait(700);
+	   do send_game_message(10.8 , 7, "                      ");
+	   do Sys.wait(250);
+    }
+	
+	return;
+   }
+   
+   method void start_counting(){
+	do Screen.clearScreen();
+	do send_game_message(11.5 , 27.4 , "3...");
+	do Sys.wait(1500);
+	do send_game_message(11.5 , 27.4 , "2...");
+	do Sys.wait(1500);
+	do send_game_message(11.5 , 27.4 , "1...");
+	do Sys.wait(1500);
+	do send_game_message(11.5 , 27.4 , "     ");
+	do send_game_message(11.5 , 27.4 , "GO!!!");
+	do Sys.wait(1500);
+	return;
+   }
+   
+   method void restart_Game() {
+		do Screen.clearScreen();
+		do start_counting();
+		do Screen.clearScreen();
+		let street = Street.new( false );
+		return;
+   }
+   
+   method int car_run(int position_car, int car_faixa, int speed_increase){
+    let position_car = position_car + 6 + speed_increase;
+	if (position_car > 230){
+		
+		do street.draw_erase_others_car(car_faixa, position_car - (6 + speed_increase), false);
+		let position_car = 4;
+		
+	} else {
+	
+	do street.draw_erase_others_car(car_faixa , position_car - (6 + speed_increase) , false);
+	do street.draw_erase_others_car(car_faixa , position_car , true);
+	
+	}
+	return position_car;
+   }
+   
+   method boolean check_if_pass( int position_player , int position_enemy, int direct_p , int direct_e) {
+		if (position_player < position_enemy){
+			return check_if_hit(direct_p , direct_e);}
+		return false;
+   }
+   
+   method boolean check_if_hit( int direction_player , int direction_enemy) {
+		if (direction_player = direction_enemy){return true;}
+		return false;
+   }
+   
+   method void start_game(Street rua_jogo_atual){
+		var char volante_direction, restart;
+		var int position_car_1H ,position_car_1V , speed_increase;
+        var int	Actual_Game_Point , Actual_Game_Point_check;
+		var int position_car_2H ,position_car_2V ;
+		var int midle_faixa , position_car;
+		var boolean hit , first_car_not_pass;
+		
+		let hit = false;
+		
+			let volante_direction = 0;
+			let position_car = 0;
+			let position_car_1H = random.minorRandom();
+			let position_car_1V = 5;
+			let position_car_2H = random.minorRandom() ;
+			let position_car_2V = 5 ;
+			let midle_faixa = 0;
+			
+			
+		while (true) {
+			let Actual_Game_Point = 0;
+			let Actual_Game_Point_check = 0;
+			do send_game_message(5 , 1, "DONT HIT THE GAME!!");
+			do send_game_message(6 , 1, "Score:");
+			do Output.moveCursor(6, 8.5);
+			do Output.printInt(0);
+			let first_car_not_pass = true;
+			do send_game_message(19 , 1, "Your Record :");
+			do Output.moveCursor(19, 14.2);
+			do Output.printInt(game_record);
+			
+			while (~hit){
+				let speed_increase = Actual_Game_Point * 1.70;
+				if (Actual_Game_Point_check < Actual_Game_Point){
+					let Actual_Game_Point_check = Actual_Game_Point;
+					do Output.moveCursor(6, 8.5);
+					do Output.printInt(Actual_Game_Point);}
+					
+				let volante_direction = Keyboard.keyPressed();
+				
+				if (volante_direction = 132){
+					let position_car = position_car + 1;
+					do street.raise_player_car(position_car - 1);
+					do street.draw_player_car(position_car);
+					if (position_car > 1){
+						let hit = true;
+					}	
+				}
+				if (volante_direction = 130){
+					let position_car = position_car - 1;
+					do street.raise_player_car(position_car + 1);
+					do street.draw_player_car(position_car);	
+				}
+				
+				let hit = check_if_pass( 194 , position_car_2V, position_car , position_car_2H);
+				if ( ~(hit) ) { let hit = check_if_pass( 194 , position_car_1V, position_car , position_car_1H); }
+				
+				if (position_car < 0 ){let hit = true;}
+				if ( position_car > 1){let hit = true;}
+				
+				if (position_car_1V > 124){
+					let first_car_not_pass = false;
+				}
+				if (first_car_not_pass){
+				} else {
+					let position_car_2V = car_run(position_car_2V , position_car_2H, speed_increase);
+				}
+				
+				let position_car_1V = car_run(position_car_1V , position_car_1H, speed_increase);
+				if (position_car_1V = 4){ 
+				let position_car_1H = random.minorRandom(); 
+				let Actual_Game_Point = Actual_Game_Point + 1;
+				}
+				if (position_car_2V = 4){ 
+					let position_car_2H = random.minorRandom(); 
+					let Actual_Game_Point = Actual_Game_Point + 1;
+					}
+				let midle_faixa = midle_faixa + 1;
+				if (midle_faixa = 4){ let midle_faixa = 0; }
+				do street.change_midle_line(midle_faixa);
+				do Sys.wait(200);
+				
+			}
+			
+			do send_game_message(9 , 10, "YOU HIT!!");
+			let restart = 1;
+			
+			if (game_record < Actual_Game_Point ) {
+				let game_record = Actual_Game_Point;
+				do send_game_message(20 , 1, "You 'hit' your record!");
+				do send_game_message(19 , 1, "Your Record :");
+				do Output.moveCursor(19, 14.2);
+				do Output.printInt(game_record);
+			}
+			
+			while (~(restart = 82)) {
+			   do send_game_message(10.8 , 5, "Hold 'R' To Restart");
+			   let restart = Keyboard.keyPressed();
+			   do Sys.wait(800);
+			   do send_game_message(10.8 , 5, "                    ");
+			   do Sys.wait(250);
+			}
+			
+			let hit = false;
+			let volante_direction = 0;
+			let position_car = 0;
+			let position_car_1H = 0;
+			let position_car_1V = 5;
+			let position_car_2H = 0 ;
+			let position_car_2V = 5 ;
+			let midle_faixa = 0;
+			 
+			do restart_Game();
+			
+			
+		}
+		return;
+	}
+}
+
+
+

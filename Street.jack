@@ -1,0 +1,127 @@
+class Street {
+   field int centerX, centerY;
+  
+   constructor Street new(boolean is_menu) {
+		if (is_menu) {
+			let centerX = 335;
+			let centerY = 130;
+			do draw_street(false);
+		} else {
+			let centerX = 270;
+			let centerY = 130;
+			do draw_street(true);
+		}
+       
+	   
+       return this;
+   }
+   
+   
+   method void draw_street(boolean game) {
+	  var int centerLineStreet;
+      do Screen.setColor(true);
+      do Screen.drawRectangle(centerX - 65.8 , 0 , centerX - 64 , centerY + 125 );
+      do Screen.drawRectangle(centerX + 64 , 0 , centerX + 65.8, centerY + 125 );
+	  let centerLineStreet = 0;
+	  do change_midle_line(1);
+	  if (game){
+		do draw_player_car(0);
+	  }
+      return ;
+   }  
+   
+
+   method void change_midle_line ( int position ){
+	 var int centerLineStreet;
+	 let centerLineStreet = 0;
+	 if (position = 0){
+		do Screen.setColor(false);
+		do Screen.drawRectangle(centerX + 0.8, 0 , centerX - 0.8 , 244);
+	  }
+	 if (position = 1){
+		do Screen.setColor(true);
+		while ( centerLineStreet < 242 ) {
+			do Screen.drawRectangle(centerX + 0.8, centerLineStreet , centerX - 0.8 , centerLineStreet + 10 );
+			let centerLineStreet = centerLineStreet + 20;
+		}
+	  }
+	  if (position = 2){
+		do Screen.setColor(false);
+		do Screen.drawRectangle(centerX + 0.8, 0 , centerX - 0.8 , 244);
+	  }
+	  
+	  if (position = 3){
+		do Screen.setColor(true);
+		do Screen.drawRectangle(centerX + 0.8, centerLineStreet , centerX - 0.8 , centerLineStreet + 5 );
+		let centerLineStreet = 5;
+		while ( centerLineStreet < 244 ) {
+			do Screen.drawRectangle(centerX + 0.8, centerLineStreet , centerX - 0.8 , centerLineStreet + 10 );
+			let centerLineStreet = centerLineStreet + 20;
+			}
+	  }
+	  return;
+   }
+   
+   
+   method void draw_player_car( int position ){
+	   if (position < 0) {
+	   do Screen.setColor(true);
+	   do Screen.drawRectangle(centerX - 70 , centerY + 93.3 , centerX - 61 , centerY + 119 );
+	   do Screen.drawRectangle(centerX - 72 , centerY + 99.5 , centerX - 59 , centerY + 102.5 );
+	   do Screen.drawRectangle(centerX - 72 , centerY + 114 , centerX - 59 , centerY + 117.8 );
+	   
+	   }
+	   if (position = 0) {
+	   do Screen.setColor(true);
+	   do Screen.drawRectangle(centerX - 38 , centerY + 93.3 , centerX - 29 , centerY + 119 );
+	   do Screen.drawRectangle(centerX - 40 , centerY + 99.5 , centerX - 27 , centerY + 102.5 );
+	   do Screen.drawRectangle(centerX - 40 , centerY + 114 , centerX - 27 , centerY + 117.8 );
+	   
+	   }
+	   if (position = 1){
+	   do Screen.setColor(true);
+	   do Screen.drawRectangle(centerX + 29 , centerY + 93.3 , centerX + 38 , centerY + 119 );
+	   do Screen.drawRectangle(centerX + 27 , centerY + 99.5 , centerX + 40 , centerY + 102.5 );
+	   do Screen.drawRectangle(centerX + 27 , centerY + 114 , centerX + 40 , centerY + 117.8 );
+	   }
+	   if (position > 1){
+	   do Screen.setColor(true);
+	   do Screen.drawRectangle(centerX + 61 , centerY + 93.3 , centerX + 70 , centerY + 119 );
+	   do Screen.drawRectangle(centerX + 59 , centerY + 99.5 , centerX + 72 , centerY + 102.5 );
+	   do Screen.drawRectangle(centerX + 59 , centerY + 114 , centerX + 72 , centerY + 117.8 );
+	   }
+	   return ;
+   }
+   
+   method void raise_player_car( int position ){
+	   if (position = 0) {
+		   do Screen.setColor(false);
+		   do Screen.drawRectangle(centerX - 38 , centerY + 93.3 , centerX - 29 , centerY + 119 );
+		   do Screen.drawRectangle(centerX - 40 , centerY + 99.5 , centerX - 27 , centerY + 102.5 );
+		   do Screen.drawRectangle(centerX - 40 , centerY + 114 , centerX - 27 , centerY + 117.8 );
+	   } else {
+		   do Screen.setColor(false);
+		   do Screen.drawRectangle(centerX + 29 , centerY + 93.3 , centerX + 38 , centerY + 119 );
+		   do Screen.drawRectangle(centerX + 27 , centerY + 99.5 , centerX + 40 , centerY + 102.5 );
+		   do Screen.drawRectangle(centerX + 27 , centerY + 114 , centerX + 40 , centerY + 117.8 );
+	   }
+	   
+	   return;
+   }
+   
+   method void draw_erase_others_car( int position , int position_vertically, boolean draw ){
+		 do Screen.setColor(draw);
+		 if (position = 0) {
+		   do Screen.drawRectangle(centerX - 38 , position_vertically , centerX - 29 , position_vertically + 18.5 );
+		   do Screen.drawRectangle(centerX - 40 , position_vertically + 1.5 , centerX - 27 , position_vertically + 3.5 );
+		   do Screen.drawRectangle(centerX - 40 , position_vertically + 12 , centerX - 27 , position_vertically + 15 );
+	   } else {
+		   do Screen.drawRectangle(centerX + 29 , position_vertically , centerX + 38 , position_vertically + 18.5 );
+		   do Screen.drawRectangle(centerX + 27 , position_vertically + 1.5 , centerX + 40 , position_vertically + 3.5 );
+		   do Screen.drawRectangle(centerX + 27 , position_vertically + 12 , centerX + 40 , position_vertically + 15 );
+	   }
+	   return;
+   }
+   
+}  
+
