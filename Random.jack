@@ -36,7 +36,7 @@ class Random {
         }
         return ret;
     }
-	//Professor tive que acrecentar este método devido a função acima não lidar bem em um range de 0..1
+	//new method.
 	method int minorRandom() {
 		var int position_random , final_an;
 		let position_random = Random.randRange(80);
